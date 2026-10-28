@@ -28,35 +28,14 @@ input{flex:1 1 140px}
 table{border-collapse:collapse;width:100%;font-size:.95rem}td,th{border:1px solid var(--bd);padding:5px 7px;text-align:left}
 </style></head><body>
 <h1>Sandhi tool by SanskritGyan</h1>
-<div class="m">चरण १: स्वर सन्धि ✔ · चरण २: व्यंजन सन्धि ✔ · चरण ३: विसर्ग सन्धि ✔</div>
+<div class="m">स्वर · व्यंजन · विसर्ग — तीनों सन्धियाँ एक ही विकल्प में</div>
 <div class="c" style="font-size:.95rem">ℹ️ <b>सूचना:</b> सन्धि-विच्छेद नियमों पर आधारित होने के कारण सिस्टम अपने से गलत उत्तर का निर्णय कर सकता है, इसलिए अभी सन्धि-विच्छेद का विकल्प उपलब्ध नहीं है।</div>
 <div id="selfchk"></div>
-<div class="tabs" id="top"><button class="on" data-t="sw">स्वर सन्धि</button><button data-t="vy">व्यंजन सन्धि</button><button data-t="vi">विसर्ग सन्धि</button></div>
+<div class="tabs" id="usub"><button class="on" data-t="ujod">सन्धि करें</button><button data-t="uniy">नियम-सूची</button></div>
+<div class="p on" id="ujod"><div class="m">2, 3, 4 या जितने चाहें उतने शब्द भरिए। स्वर, व्यंजन और विसर्ग सन्धि के सभी नियम अपने आप क्रम से लगेंगे और हर चरण की व्याख्या मिलेगी। उदाहरण: तत् + अस्ति + अत्र</div><div class="row"><label>रूप: <select id="umode" style="display:inline-block"><option value="p">पद (अलग-अलग शब्द)</option><option value="s">समास (जुड़ा हुआ)</option></select></label></div><div class="m">हर शब्द के साथ वाला चयन (सामान्य / उपसर्ग + धातु / प्रगृह्य) केवल कुछ विशेष स्वर-सन्धियों (पररूप, प्रकृतिभाव, वृद्धि) के लिए है।</div><div id="urows"></div><div class="row"><button class="add" id="uplus">+ पद जोड़ें</button><button class="go" id="ugo">सन्धि करें</button></div><div id="uout"></div></div>
+<div class="p" id="uniy"><div class="w"><table id="urt"></table></div></div>
 
-<div class="p on" id="sw">
-<div class="tabs" id="sub"><button class="on" data-t="jod">सन्धि करें</button><button data-t="niy">नियम-सूची</button></div>
-
-<div class="p on" id="jod">
-<div id="rows"></div>
-<div class="row"><button class="add" id="plus">+ पद जोड़ें</button><button class="go" id="run">सन्धि करें</button></div>
-<div id="out1"></div>
-</div>
-
-<div class="p" id="niy"><div class="w"><table id="rt"></table></div></div>
-</div>
-
-<div class="p" id="vy">
-<div class="tabs" id="vsub"><button class="on" data-t="vjod">सन्धि करें</button><button data-t="vniy">नियम-सूची</button></div>
-<div class="p on" id="vjod"><div id="vrows"></div><div class="row"><button class="add" id="vplus">+ पद जोड़ें</button><button class="go" id="vgo">सन्धि करें</button></div><div id="vout1"></div></div>
-<div class="p" id="vniy"><div class="w"><table id="vrt"></table></div></div>
-</div>
-<div class="p" id="vi">
-<div class="tabs" id="isub"><button class="on" data-t="ijod">सन्धि करें</button><button data-t="iniy">नियम-सूची</button></div>
-<div class="p on" id="ijod"><div class="m">पूर्वपद विसर्ग (ः) पर समाप्त होना चाहिए, जैसे: रामः, हरिः, निः।</div><div class="row"><label>रूप: <select id="imode" style="display:inline-block"><option value="p">पद (अलग-अलग शब्द)</option><option value="s">समास (जुड़ा हुआ)</option></select></label></div><div id="irows"></div><div class="row"><button class="add" id="iplus">+ पद जोड़ें</button><button class="go" id="igo">सन्धि करें</button></div><div id="iout1"></div></div>
-<div class="p" id="iniy"><div class="w"><table id="irt"></table></div></div>
-</div>
-
-<footer>Sandhi tool by SanskritGyan · <b>www.sanskritgyan.in</b> <span class="m">· v4</span></footer>
+<footer>Sandhi tool by SanskritGyan · <b>www.sanskritgyan.in</b> <span class="m">· v6</span></footer>
 <script>
 const V={'अ':'','आ':'ा','इ':'ि','ई':'ी','उ':'ु','ऊ':'ू','ऋ':'ृ','ॠ':'ॄ','ऌ':'ॢ','ए':'े','ऐ':'ै','ओ':'ो','औ':'ौ'};
 const IND=Object.keys(V),M={};for(const k in V)if(V[k])M[V[k]]=k;
@@ -171,11 +150,11 @@ function vjoin(a,b){
   const cl=VG[3].indexOf(C);
   if(D=='ल')return[{res:st+'ल्'+b,k:'torli'}];
   if('चछजझञश'.includes(D)){
-   const c=VG[1][cl],o=[{res:mk(c,D,rest),k:'shcutva'}];
+   const c='जझ'.includes(D)?'ज':VG[1][cl],o=[{res:mk(c,D,rest),k:'shcutva'}];
    if(D=='श')o.unshift({res:mk(c,'छ',rest),k:'chhatva'});
    return o;
   }
-  if('टठडढणष'.includes(D))return[{res:mk(VG[2][cl],D,rest),k:'shtutva'}];
+  if('टठडढणष'.includes(D))return[{res:mk('डढ'.includes(D)?'ड':VG[2][cl],D,rest),k:'shtutva'}];
  }
  if(jh(C)){
   const w=VG[r];
@@ -211,8 +190,8 @@ purva:'पद के अन्त में ए/ओ हो और अगला �
 para:'उपसर्ग के अन्त में अ/आ हो और आगे धातु ए/ओ से शुरू हो, तो पहला स्वर हट जाता है, बाद वाला स्वर ही रहता है। जैसे: प्र+एजते = प्रेजते।',
 prag:'द्विवचन के जो रूप ई, ऊ, ए पर समाप्त होते हैं (हरी, विष्णू, लते), उनके बाद स्वर आने पर भी सन्धि नहीं होती।',
 none:'सन्धि तभी होती है जब नियम की शर्त पूरी हो। यहाँ शर्त नहीं मिली, इसलिए शब्द बस जोड़ दिए गए हैं।',
-shcutva:'त-वर्ग (त थ द ध न) के बाद श या च-वर्ग (च छ ज झ ञ) आए तो त-वर्ग का अक्षर च-वर्ग में बदल जाता है। जैसे: सत्+चित् = सच्चित्।',
-shtutva:'त-वर्ग के बाद ट-वर्ग (ट ठ ड ढ ण) या ष आए तो त-वर्ग का अक्षर ट-वर्ग में बदल जाता है। जैसे: तत्+टीका = तट्टीका।',
+shcutva:'त-वर्ग (त थ द ध न) के बाद श या च-वर्ग (च छ ज झ ञ) आए तो त-वर्ग का अक्षर च-वर्ग में बदल जाता है। जैसे: सत्+चित् = सच्चित्। (आगे ज/झ हो तो च् जश्त्व से ज् बन जाता है: सत्+जन = सज्जन।)',
+shtutva:'त-वर्ग के बाद ट-वर्ग (ट ठ ड ढ ण) या ष आए तो त-वर्ग का अक्षर ट-वर्ग में बदल जाता है। जैसे: तत्+टीका = तट्टीका। (आगे ड/ढ हो तो ट् जश्त्व से ड् बन जाता है: उत्+डयन = उड्डयन।)',
 chhatva:'त्+श् मिलने पर श् विकल्प से छ् बन जाता है। जैसे: तत्+शिव = तच्छिव।',
 torli:'त-वर्ग के बाद ल् आए तो त-वर्ग का अक्षर भी ल् बन जाता है। जैसे: उत्+लास = उल्लास।',
 jashtva_a:'पद के अन्त के क्, च्, ट्, त्, प् (और उनके वर्ग के ख, घ आदि) के बाद स्वर या मृदु व्यंजन आए तो वे अपने वर्ग के तीसरे अक्षर बन जाते हैं: क्→ग्, च्→ज्, ट्→ड्, त्→द्, प्→ब्। जैसे: जगत्+ईश = जगदीश।',
@@ -298,7 +277,7 @@ function ijoin(a,b){
 }
 const ijoinM=(a,b)=>ijoin(a,b).map(x=>$('imode').value=='s'&&['lopa','ror','rmulror','sulop','vsha'].includes(x.k)?{res:x.res.replace(/ /g,''),k:x.k}:x);
 const norm=s=>s.normalize('NFC').replace(/[\u200B-\u200D\u2060\uFEFF]/g,'').replace(/[:\uFF1A]\s*$/,'\u0903').replace(/\s+/g,' ').trim();
-const DBG=['none','nov','none2','nvis','swr','visr'],dbg=s=>`<div class="m">v4 · \u091c\u093e\u0901\u091a: \u092a\u0942\u0930\u094d\u0935\u092a\u0926 \u0915\u093e \u0905\u0902\u0924\u093f\u092e \u0935\u0930\u094d\u0923 = ${[...s].slice(-1).map(c=>'U+'+c.codePointAt(0).toString(16).toUpperCase().padStart(4,'0')).join('')} (\u0935\u093f\u0938\u0930\u094d\u0917 \u0915\u093e \u0915\u094b\u0921 U+0903 \u0939\u094b\u0924\u093e \u0939\u0948) | \u0935\u093f\u0938\u0930\u094d\u0917-\u092e\u093f\u0932\u093e\u0928: ${s.slice(-1)==='\u0903'?'\u0939\u093e\u0901':'\u0928\u0939\u0940\u0902'} | \u0939\u0932\u0928\u094d\u0924-\u092e\u093f\u0932\u093e\u0928: ${s.slice(-1)==='\u094d'?'\u0939\u093e\u0901':'\u0928\u0939\u0940\u0902'}</div>`;
+const DBG=['none','nov','none2','nvis','swr','visr'],dbg=s=>`<div class="m">v6 · \u091c\u093e\u0901\u091a: \u092a\u0942\u0930\u094d\u0935\u092a\u0926 \u0915\u093e \u0905\u0902\u0924\u093f\u092e \u0935\u0930\u094d\u0923 = ${[...s].slice(-1).map(c=>'U+'+c.codePointAt(0).toString(16).toUpperCase().padStart(4,'0')).join('')} (\u0935\u093f\u0938\u0930\u094d\u0917 \u0915\u093e \u0915\u094b\u0921 U+0903 \u0939\u094b\u0924\u093e \u0939\u0948) | \u0935\u093f\u0938\u0930\u094d\u0917-\u092e\u093f\u0932\u093e\u0928: ${s.slice(-1)==='\u0903'?'\u0939\u093e\u0901':'\u0928\u0939\u0940\u0902'} | \u0939\u0932\u0928\u094d\u0924-\u092e\u093f\u0932\u093e\u0928: ${s.slice(-1)==='\u094d'?'\u0939\u093e\u0901':'\u0928\u0939\u0940\u0902'}</div>`;
 const card=(h,r,x='')=>`<div class="c">${h}<div class="m">नियम: ${R[r][0]}</div><div class="s">सूत्र: ${R[r][1]}</div>${VY[r]?`<div class="v">📘 ${VY[r]}</div>`:''}${x}</div>`;
 function addRow(id='rows'){
  const n=$(id).children.length,d=document.createElement('div');d.className='row';
@@ -307,55 +286,54 @@ function addRow(id='rows'){
  $(id).appendChild(d);
 }
 const $=id=>document.getElementById(id);
-addRow();addRow();$('plus').onclick=addRow;
-$('run').onclick=()=>{
- const rs=[...$('rows').children].map(r=>({v:norm(r.querySelector('input').value),m:(r.querySelector('select')||{}).value}));
- if(rs.some(r=>!r.v)){$('out1').innerHTML='<div class="c">सभी खाने भरें।</div>';return}
- let cur=rs[0].v,h='';
- for(let i=1;i<rs.length;i++){
-  const j=join(cur,rs[i].v,rs[i].m);
-  h+=card(`<b>${cur} + ${rs[i].v} → <span class="big">${j.res}</span></b>`,j.k,DBG.includes(j.k)?dbg(cur):'')+(j.alt?card(`<b>${cur} + ${rs[i].v} → <span class="big">${j.alt.res}</span></b> <span class="m">(विकल्प)</span>`,j.alt.k):'');
-  cur=j.res;
- }
- $('out1').innerHTML=(rs.length>2?`<div class="c">अन्तिम रूप: <span class="big">${cur}</span></div>`:'')+h;
-};
-addRow('vrows');addRow('vrows');$('vplus').onclick=()=>addRow('vrows');
-$('vgo').onclick=()=>{
- const rs=[...$('vrows').children].map(r=>norm(r.querySelector('input').value));
- if(rs.some(v=>!v)){$('vout1').innerHTML='<div class="c">सभी खाने भरें।</div>';return}
- let cur=rs[0],h='';
- for(let i=1;i<rs.length;i++){
-  const al=vjoin(cur,rs[i]);
-  h+=al.map((x,j)=>card(`<b>${cur} + ${rs[i]} → <span class="big">${x.res}</span></b>`+(al.length>1?` <span class="m">(${j?'विकल्प':'मुख्य रूप'})</span>`:''),x.k,DBG.includes(x.k)?dbg(cur):'')).join('');
-  cur=al[0].res;
- }
- $('vout1').innerHTML=(rs.length>2?`<div class="c">अन्तिम रूप: <span class="big">${cur}</span></div>`:'')+h;
-};
-const exv={shcutva:'सत्+चित् = सच्चित्; राजन्+जय = राजञ्जय',shtutva:'तत्+टीका = तट्टीका',chhatva:'तत्+शिव = तच्छिव / तच्शिव',torli:'तत्+लीन = तल्लीन; महान्+लाभ = महाँल्लाभ',jashtva_a:'जगत्+ईश = जगदीश; वाक्+ईश = वागीश',jashtva_b:'सत्+भाव = सद्भाव',jashha:'उत्+हार = उद्धार / उद्हार',chartva:'सद्+कार = सत्कार',anunasik:'वाक्+मय = वाङ्मय; जगत्+नाथ = जगन्नाथ',anusvara:'सम्+कल्प = संकल्प; सम्+सार = संसार',parasav:'सम्+कल्प = सङ्कल्प',ngamut:'प्रत्यङ्+आत्मा = प्रत्यङ्ङात्मा; तस्मिन्+अपि = तस्मिन्नपि',nchhav:'भवान्+च = भवांश्च',tuk:'वृक्ष+छाया = वृक्षच्छाया',tuka:'आ+छादन = आच्छादन',tukv:'लक्ष्मी+छाया = लक्ष्मीच्छाया / लक्ष्मीछाया'};
-$('vrt').innerHTML='<tr><th>नियम</th><th>सूत्र</th><th>उदाहरण</th></tr>'+Object.keys(exv).map(k=>`<tr><td>${R[k][0]}</td><td>${R[k][1]}</td><td>${exv[k]}</td></tr>`).join('');
-tabs('vsub');
+const exv={shcutva:'सत्+चित् = सच्चित्; सत्+जन = सज्जन; राजन्+जय = राजञ्जय',shtutva:'तत्+टीका = तट्टीका; उत्+डयन = उड्डयन',chhatva:'तत्+शिव = तच्छिव / तच्शिव',torli:'तत्+लीन = तल्लीन; महान्+लाभ = महाँल्लाभ',jashtva_a:'जगत्+ईश = जगदीश; वाक्+ईश = वागीश',jashtva_b:'सत्+भाव = सद्भाव',jashha:'उत्+हार = उद्धार / उद्हार',chartva:'सद्+कार = सत्कार',anunasik:'वाक्+मय = वाङ्मय; जगत्+नाथ = जगन्नाथ',anusvara:'सम्+कल्प = संकल्प; सम्+सार = संसार',parasav:'सम्+कल्प = सङ्कल्प',ngamut:'प्रत्यङ्+आत्मा = प्रत्यङ्ङात्मा; तस्मिन्+अपि = तस्मिन्नपि',nchhav:'भवान्+च = भवांश्च',tuk:'वृक्ष+छाया = वृक्षच्छाया',tuka:'आ+छादन = आच्छादन',tukv:'लक्ष्मी+छाया = लक्ष्मीच्छाया / लक्ष्मीछाया'};
 const ex={dirgha:'विद्या+आलय = विद्यालय',guna:'देव+इन्द्र = देवेन्द्र; महा+ऋषि = महर्षि',vriddhi:'एक+एक = एकैक; महा+औषध = महौषध',yan:'प्रति+एक = प्रत्येक; सु+आगत = स्वागत',ayadi:'ने+अन = नयन; पौ+अक = पावक',purva:'हरे+अत्र = हरेऽत्र',para:'प्र+एजते = प्रेजते',prag:'हरी+एतौ = हरी एतौ'};
-$('rt').innerHTML='<tr><th>नियम</th><th>सूत्र</th><th>उदाहरण</th></tr>'+Object.keys(ex).map(k=>`<tr><td>${R[k][0]}</td><td>${R[k][1]}</td><td>${ex[k]}</td></tr>`).join('');
 function tabs(id){const b=[...$(id).children];b.forEach(x=>x.onclick=()=>{b.forEach(y=>{y.classList.toggle('on',y==x);$(y.dataset.t).classList.toggle('on',y==x)})})}
-addRow('irows');addRow('irows');$('iplus').onclick=()=>addRow('irows');
-$('igo').onclick=()=>{
- const rs=[...$('irows').children].map(r=>norm(r.querySelector('input').value));
- if(rs.some(v=>!v)){$('iout1').innerHTML='<div class="c">सभी खाने भरें।</div>';return}
- let cur=rs[0],h='';
- for(let i=1;i<rs.length;i++){
-  const al=ijoinM(cur,rs[i]);
-  h+=al.map((x,j)=>card(`<b>${cur} + ${rs[i]} → <span class="big">${x.res}</span></b>`+(al.length>1?` <span class="m">(${j?'विकल्प':'मुख्य रूप'})</span>`:''),x.k,DBG.includes(x.k)?dbg(cur):'')).join('');
-  cur=al[0].res;
- }
- $('iout1').innerHTML=(rs.length>2?`<div class="c">अन्तिम रूप: <span class="big">${cur}</span></div>`:'')+h;
-};
 const exi={satva:'निः+चल = निश्चल; मनः+ताप = मनस्ताप',vsha:'हरिः+शेते = हरिः शेते / हरिश्शेते',vsa:'प्रातः+काल = प्रातःकाल',ishu:'निः+कपट = निष्कपट; दुः+कर = दुष्कर',gati:'नमः+कार = नमस्कार; पुरः+कार = पुरस्कार',ao:'रामः+अपि = रामोऽपि',o:'मनः+रथ = मनोरथ',lopa:'रामः+इति = राम इति; देवाः+आगताः = देवा आगताः',rutva:'हरिः+इति = हरिरिति; हरिः+गच्छति = हरिर्गच्छति',ror:'हरिः+रम्यः = हरी रम्यः',sulop:'सः+गच्छति = स गच्छति'};
 const tb=(id,e)=>$(id).innerHTML='<tr><th>नियम</th><th>सूत्र</th><th>सरल व्याख्या</th><th>उदाहरण</th></tr>'+Object.keys(e).map(k=>`<tr><td>${R[k][0]}</td><td>${R[k][1]}</td><td>${VY[k]||''}</td><td>${e[k]}</td></tr>`).join('');
 Object.assign(ex,{v89:'उप+एति = उपैति; प्रष्ठ+ऊह = प्रष्ठौह',vart:'अक्ष+ऊहिनी = अक्षौहिणी; प्र+ऊढ = प्रौढ; स्व+ईर = स्वैर; सुखेन+ऋत = सुखार्त; दश+ऋण = दशार्ण',v91:'प्र+ऋच्छति = प्रार्च्छति',prag2:'अमी+अश्वाः = अमी अश्वाः',prag3:'अहो+ईशाः = अहो ईशाः',shak:'विष्णो+इह = विष्णविह / विष्ण इह'});Object.assign(exi,{vsa2:'तपः+कर = तपःकर / तप\u1CF5कर'});
 Object.assign(exi,{rmul:'पुनः+अपि = पुनरपि; अन्तः+गत = अन्तर्गत',rmulror:'पुनः+रमते = पुना रमते; प्रातः+रमते = प्राता रमते'});
-tb('rt',ex);tb('vrt',exv);tb('irt',exi);
+const TY={nosandhi:'सन्धि नहीं'},ORD=['स्वर सन्धि','व्यंजन सन्धि','विसर्ग सन्धि'];
+'dirgha guna gunar gunal vriddhi yan ayadi purva para prag prag2 prag3 v89 v91 vart shak none'.split(' ').forEach(k=>TY[k]=ORD[0]);
+'shcutva shtutva chhatva torli jashtva_a jashtva_b jashha chartva anunasik anusvara parasav ngamut nchhav tuk tuka tukv join nov swr visr none2'.split(' ').forEach(k=>TY[k]=ORD[1]);
+'satva vsha vsa vsa2 ishu gati ao o lopa rutva ror sulop rmul rmulror nvis'.split(' ').forEach(k=>TY[k]=ORD[2]);
+Object.assign(R,{nosandhi:['कोई सन्धि नहीं (स्वरान्त पद + व्यंजन)','स्वरान्त पद के बाद व्यंजन (छ् को छोड़कर) आने पर सन्धि-विकार नहीं होता']});
+Object.assign(VY,{nosandhi:'जब पहला शब्द स्वर पर समाप्त हो और अगला शब्द व्यंजन से शुरू हो (छ को छोड़कर), तो कोई सन्धि नहीं होती; शब्द जैसे हैं वैसे ही रहते हैं।'});
+function ujoin(a,b,mode,sam){
+ const l=a.slice(-1),D=b[0];
+ if(l=='ः'){const al=ijoin(a,b);return sam?al.map(x=>['lopa','ror','rmulror','sulop','vsha'].includes(x.k)?{res:x.res.replace(/ /g,''),k:x.k}:x):al}
+ if(l=='्')return vjoin(a,b);
+ if(lastV(a)){
+  if(IND.includes(D)){const j=join(a,b,mode),o=[{res:j.res,k:j.k}];if(j.alt)o.push(j.alt);return o}
+  if(D=='छ')return vjoin(a,b);
+ }
+ return[{res:a+b,k:'nosandhi'}];
+}
+addRow('urows');addRow('urows');$('uplus').onclick=()=>addRow('urows');
+$('ugo').onclick=()=>{
+ const rs=[...$('urows').children].map(r=>({v:norm(r.querySelector('input').value),m:(r.querySelector('select')||{}).value}));
+ if(rs.some(r=>!r.v)){$('uout').innerHTML='<div class="c">सभी खाने भरें।</div>';return}
+ const sam=$('umode').value=='s';let cur=rs[0].v,h='',sm=[];
+ for(let i=1;i<rs.length;i++){
+  const al=ujoin(cur,rs[i].v,rs[i].m,sam),x=al[0],t=TY[x.k]||'';
+  sm.push(`<li>चरण ${i}: ${cur} + ${rs[i].v} → <b>${x.res}</b> — ${t}: ${R[x.k][0]}</li>`);
+  h+=card(`<b>चरण ${i}: ${cur} + ${rs[i].v} → <span class="big">${x.res}</span></b> <span class="m">· ${t}</span>`,x.k,DBG.includes(x.k)?dbg(cur):'');
+  al.slice(1).forEach(y=>{h+=card(`<b>${cur} + ${rs[i].v} → <span class="big">${y.res}</span></b> <span class="m">(विकल्प · ${TY[y.k]||''})</span>`,y.k)});
+  cur=x.res;
+ }
+ $('uout').innerHTML=`<div class="c">अन्तिम रूप: <span class="big">${cur}</span><ol class="m" style="margin:6px 0 0;padding-left:20px">${sm.join('')}</ol></div>`+h;
+};
+const UEX=Object.assign({},ex,exv,exi);
+$('urt').innerHTML='<tr><th>प्रकार</th><th>नियम</th><th>सूत्र</th><th>सरल व्याख्या</th><th>उदाहरण</th></tr>'+Object.keys(UEX).sort((p,q)=>ORD.indexOf(TY[p])-ORD.indexOf(TY[q])).map(k=>`<tr><td>${TY[k]}</td><td>${R[k][0]}</td><td>${R[k][1]}</td><td>${VY[k]||''}</td><td>${UEX[k]}</td></tr>`).join('');
 try{const cps=s=>[...s].map(c=>'U+'+c.codePointAt(0).toString(16).toUpperCase().padStart(4,'0')).join(' ');
 const ok=join('विद्या','आलय','s').res=='विद्यालय'&&ijoin('पुरः','कार')[0].res=='पुरस्कार'&&vjoin('जगत्','ईश')[0].res=='जगदीश';
 if(!ok)$('selfchk').innerHTML='<div class="c">⚠️ <b>जाँच-संदेश:</b> कोड इस पेज पर ठीक से नहीं चल रहा। विसर्ग='+cps(ijoin.toString().split("'")[1]||'')+' | आ की मात्रा='+cps(V['आ'])+' | हलन्त='+cps(vjoin.toString().split("'")[3]||'')+'। कृपया यह संदेश भेजें।</div>'}catch(e){$('selfchk').innerHTML='<div class="c">⚠️ जाँच-त्रुटि: '+e.message+'</div>'}
-tabs('top');tabs('sub');tabs('isub');
-</script></body></html>
+tabs('usub');
+</script><script>
+(function(){function send(){try{parent.postMessage({sgH:Math.ceil(document.body.getBoundingClientRect().height)+16},'*')}catch(e){}}
+window.addEventListener('load',send);
+if(window.ResizeObserver)new ResizeObserver(send).observe(document.body);
+[300,1000,2500,5000].forEach(function(t){setTimeout(send,t)});
+document.addEventListener('click',function(){setTimeout(send,150)});})();
+</script>
+</body></html>
